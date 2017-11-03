@@ -14,6 +14,7 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 -- -----------------------------------------------------
 -- Schema PousoAlegrill_BD
 -- -----------------------------------------------------
+DROP SCHEMA IF EXISTS `PousoAlegrill_BD`;
 CREATE SCHEMA IF NOT EXISTS `PousoAlegrill_BD` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci ;
 USE `PousoAlegrill_BD` ;
 
@@ -35,7 +36,7 @@ CREATE TABLE IF NOT EXISTS `PousoAlegrill_BD`.`Mesa` (
   `numero` INT NULL COMMENT '',
   `conta` FLOAT NULL DEFAULT NULL COMMENT '',
   `finalizada` TINYINT(1) NULL COMMENT '',
-  `Financeiro_idFinanceiro` INT NOT NULL COMMENT '',
+  `Financeiro_idFinanceiro` INT NULL COMMENT '',
   PRIMARY KEY (`idMesa`),
   INDEX `fk_Mesa_Financeiro1_idx` (`Financeiro_idFinanceiro` ASC),
   CONSTRAINT `fk_Mesa_Financeiro1`
@@ -52,24 +53,51 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `PousoAlegrill_BD`.`Bebida` (
   `idBebida` INT NOT NULL AUTO_INCREMENT,
   `nome` VARCHAR(45) NOT NULL COMMENT '',
+  /*
   `descricao` VARCHAR(45) NOT NULL COMMENT '',
   `categoria` INT NOT NULL COMMENT '',
+  */
   `disponivel` TINYINT(1) NOT NULL COMMENT '',
   `preco` FLOAT NOT NULL COMMENT '',
+  /*
   `quantidade` FLOAT NOT NULL COMMENT '',
   `unidade` INT NULL COMMENT '',
   `servida` TINYINT(1) NULL COMMENT '',
   `numeroMesa` INT NULL COMMENT '',
   `Mesa_idMesa` INT NOT NULL COMMENT '',
-  PRIMARY KEY (`idBebida`),
+  */
+  PRIMARY KEY (`idBebida`))
+  /*
   INDEX `fk_Bebida_Mesa1_idx` (`Mesa_idMesa` ASC),
   CONSTRAINT `fk_Bebida_Mesa1`
     FOREIGN KEY (`Mesa_idMesa`)
     REFERENCES `PousoAlegrill_BD`.`Mesa` (`idMesa`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
+	*/
 ENGINE = InnoDB;
 
+-- -----------------------------------------------------
+-- Table `PousoAlegrill_BD`.`Mesa_has_Bebida`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `PousoAlegrill_BD`.`Mesa_has_Bebida` (
+  `mesa_idMesa` INT NOT NULL,
+  `bebida_idBebida` INT NOT NULL,
+  `servida` TINYINT(1) NOT NULL,
+  /*PRIMARY KEY (`mesa_idMesa`, `bebida_idBebida`),*/
+  INDEX `fk_mesa_has_bebida_bebida1_idx` (`bebida_idBebida` ASC),
+  INDEX `fk_mesa_has_bebida_mesa_idx` (`mesa_idMesa` ASC),
+  CONSTRAINT `fk_mesa_has_bebida_mesa`
+    FOREIGN KEY (`mesa_idMesa`)
+    REFERENCES `PousoAlegrill_BD`.`Mesa` (`idMesa`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_mesa_has_bebida_bebida1`
+    FOREIGN KEY (`bebida_idBebida`)
+    REFERENCES `PousoAlegrill_BD`.`Bebida` (`idBebida`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
 
 -- -----------------------------------------------------
 -- Table `PousoAlegrill_BD`.`Comida`
@@ -77,24 +105,51 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `PousoAlegrill_BD`.`Comida` (
   `idComida` INT NOT NULL AUTO_INCREMENT,
   `nome` VARCHAR(45) NULL COMMENT '',
+  /*
   `descricao` VARCHAR(45) NULL COMMENT '',
   `categoria` INT NULL COMMENT '',
+  */
   `disponivel` TINYINT(1) NULL COMMENT '',
   `preco` FLOAT NULL COMMENT '',
+  /*
   `quantidade` FLOAT NULL COMMENT '',
   `unidade` INT NULL COMMENT '',
   `servida` TINYINT(1) NULL COMMENT '',
   `numMesa` INT NULL COMMENT '',
   `Mesa_idMesa` INT NOT NULL COMMENT '',
-  PRIMARY KEY (`idComida`),
+  */
+  PRIMARY KEY (`idComida`))
+  /*
   INDEX `fk_Comida_Mesa_idx` (`Mesa_idMesa` ASC),
   CONSTRAINT `fk_Comida_Mesa`
     FOREIGN KEY (`Mesa_idMesa`)
     REFERENCES `PousoAlegrill_BD`.`Mesa` (`idMesa`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
+    */
 ENGINE = InnoDB;
 
+-- -----------------------------------------------------
+-- Table `PousoAlegrill_BD`.`Mesa_has_Comida`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `PousoAlegrill_BD`.`Mesa_has_Comida` (
+  `mesa_idMesa` INT NOT NULL,
+  `comida_idComida` INT NOT NULL,
+  `servida` TINYINT(1) NOT NULL,
+  /*PRIMARY KEY (`mesa_idMesa`, `comida_idComida`),*/
+  INDEX `fk_mesa_has_comida_comida1_idx` (`comida_idComida` ASC),
+  INDEX `fk_mesa_has_comida_mesa_idx` (`mesa_idMesa` ASC),
+  CONSTRAINT `fk_mesa_has_comida_mesa`
+    FOREIGN KEY (`mesa_idMesa`)
+    REFERENCES `PousoAlegrill_BD`.`Mesa` (`idMesa`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_mesa_has_comida_comida1`
+    FOREIGN KEY (`comida_idComida`)
+    REFERENCES `PousoAlegrill_BD`.`Comida` (`idComida`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
 
 -- -----------------------------------------------------
 -- Table `PousoAlegrill_BD`.`Usuario`
@@ -108,8 +163,45 @@ CREATE TABLE IF NOT EXISTS `PousoAlegrill_BD`.`Usuario` (
   PRIMARY KEY (`idUsuario`))
 ENGINE = InnoDB;
 
+insert into Usuario values(0, 'karla', 'karla@karla', 'karla', 1);
+insert into Usuario values(0, 'pedro', 'pedro@pedro', 'pedro', 2);
+insert into Usuario values(0, 'luiz', 'luiz@luiz', 'luiz', 3);
 insert into Usuario values(0, 'admin', 'admin@admin', 'admin', 4);
+
+insert into Comida values(0, 'batata frita', true, 12.50);
+insert into Comida values(0, 'halls', true, 2.50);
+insert into Comida values(0, 'espetinho', true, 4.00);
+insert into Comida values(0, 'salada', true, 8.20);
+
+insert into Bebida values(0, 'skol', true, 5.99);
+insert into Bebida values(0, 'coca', true, 3.50);
+insert into Bebida values(0, 'agua s/ gas', true, 2.00);
+insert into Bebida values(0, 'suco de laranja', true, 4.25);
+
+insert into Mesa values(0, 12, 0, false, null);
+insert into Mesa values(0, 3, 0, false, null);
+insert into Mesa values(0, 8, 0, false, null);
+
+insert into mesa_has_bebida values(1, 2, false);
+insert into mesa_has_bebida values(1, 3, true);
+insert into mesa_has_bebida values(2, 1, false);
+insert into mesa_has_bebida values(2, 4, true);
+
+insert into mesa_has_comida values(3, 1, false);
+insert into mesa_has_comida values(3, 3, false);
+insert into mesa_has_comida values(1, 2, true);
+insert into mesa_has_comida values(1, 2, false);
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+
+/*
+CREATE TABLE IF NOT EXISTS `testando`.`mesa` (
+  `idMesa` INT GENERATED ALWAYS AS () VIRTUAL,
+  `numMesa` INT NOT NULL,
+  PRIMARY KEY (`idMesa`),
+  UNIQUE INDEX `idMesa_UNIQUE` (`idMesa` ASC),
+  UNIQUE INDEX `numMesa_UNIQUE` (`numMesa` ASC))
+ENGINE = InnoDB
+*/

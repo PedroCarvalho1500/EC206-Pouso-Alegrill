@@ -23,7 +23,7 @@ USE `PousoAlegrill_BD` ;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `PousoAlegrill_BD`.`Financeiro` (
   `idFinanceiro` INT NOT NULL AUTO_INCREMENT COMMENT '',
-  `data` VARCHAR(45) NULL COMMENT '',
+  `conta` FLOAT NULL DEFAULT NULL COMMENT '',
   PRIMARY KEY (`idFinanceiro`))
 ENGINE = InnoDB;
 
@@ -53,28 +53,9 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `PousoAlegrill_BD`.`Bebida` (
   `idBebida` INT NOT NULL AUTO_INCREMENT,
   `nome` VARCHAR(45) NOT NULL COMMENT '',
-  /*
-  `descricao` VARCHAR(45) NOT NULL COMMENT '',
-  `categoria` INT NOT NULL COMMENT '',
-  */
   `disponivel` TINYINT(1) NOT NULL COMMENT '',
   `preco` FLOAT NOT NULL COMMENT '',
-  /*
-  `quantidade` FLOAT NOT NULL COMMENT '',
-  `unidade` INT NULL COMMENT '',
-  `servida` TINYINT(1) NULL COMMENT '',
-  `numeroMesa` INT NULL COMMENT '',
-  `Mesa_idMesa` INT NOT NULL COMMENT '',
-  */
   PRIMARY KEY (`idBebida`))
-  /*
-  INDEX `fk_Bebida_Mesa1_idx` (`Mesa_idMesa` ASC),
-  CONSTRAINT `fk_Bebida_Mesa1`
-    FOREIGN KEY (`Mesa_idMesa`)
-    REFERENCES `PousoAlegrill_BD`.`Mesa` (`idMesa`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-	*/
 ENGINE = InnoDB;
 
 -- -----------------------------------------------------

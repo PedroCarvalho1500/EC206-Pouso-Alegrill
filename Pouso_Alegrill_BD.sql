@@ -32,18 +32,18 @@ ENGINE = InnoDB;
 -- Table `PousoAlegrill_BD`.`Mesa`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `PousoAlegrill_BD`.`Mesa` (
-  `idMesa` INT NOT NULL AUTO_INCREMENT COMMENT '',
+  `idMesa` INT AUTO_INCREMENT COMMENT '',
   `numero` INT NULL COMMENT '',
   `conta` FLOAT NULL DEFAULT NULL COMMENT '',
   `finalizada` TINYINT(1) NULL COMMENT '',
-  `Financeiro_idFinanceiro` INT NULL COMMENT '',
+  `Financeiro_idFinanceiro` INT NULL DEFAULT NULL COMMENT '',
   PRIMARY KEY (`idMesa`),
   INDEX `fk_Mesa_Financeiro1_idx` (`Financeiro_idFinanceiro` ASC),
   CONSTRAINT `fk_Mesa_Financeiro1`
     FOREIGN KEY (`Financeiro_idFinanceiro`)
     REFERENCES `PousoAlegrill_BD`.`Financeiro` (`idFinanceiro`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -65,19 +65,19 @@ CREATE TABLE IF NOT EXISTS `PousoAlegrill_BD`.`Mesa_has_Bebida` (
   `mesa_idMesa` INT NOT NULL,
   `bebida_idBebida` INT NOT NULL,
   `servida` TINYINT(1) NOT NULL,
-  /*PRIMARY KEY (`mesa_idMesa`, `bebida_idBebida`),*/
+  /* PRIMARY KEY (`mesa_idMesa`, `bebida_idBebida`), */
   INDEX `fk_mesa_has_bebida_bebida1_idx` (`bebida_idBebida` ASC),
   INDEX `fk_mesa_has_bebida_mesa_idx` (`mesa_idMesa` ASC),
   CONSTRAINT `fk_mesa_has_bebida_mesa`
     FOREIGN KEY (`mesa_idMesa`)
     REFERENCES `PousoAlegrill_BD`.`Mesa` (`idMesa`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `fk_mesa_has_bebida_bebida1`
     FOREIGN KEY (`bebida_idBebida`)
     REFERENCES `PousoAlegrill_BD`.`Bebida` (`idBebida`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 -- -----------------------------------------------------
@@ -86,28 +86,9 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `PousoAlegrill_BD`.`Comida` (
   `idComida` INT NOT NULL AUTO_INCREMENT,
   `nome` VARCHAR(45) NULL COMMENT '',
-  /*
-  `descricao` VARCHAR(45) NULL COMMENT '',
-  `categoria` INT NULL COMMENT '',
-  */
   `disponivel` TINYINT(1) NULL COMMENT '',
   `preco` FLOAT NULL COMMENT '',
-  /*
-  `quantidade` FLOAT NULL COMMENT '',
-  `unidade` INT NULL COMMENT '',
-  `servida` TINYINT(1) NULL COMMENT '',
-  `numMesa` INT NULL COMMENT '',
-  `Mesa_idMesa` INT NOT NULL COMMENT '',
-  */
   PRIMARY KEY (`idComida`))
-  /*
-  INDEX `fk_Comida_Mesa_idx` (`Mesa_idMesa` ASC),
-  CONSTRAINT `fk_Comida_Mesa`
-    FOREIGN KEY (`Mesa_idMesa`)
-    REFERENCES `PousoAlegrill_BD`.`Mesa` (`idMesa`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-    */
 ENGINE = InnoDB;
 
 -- -----------------------------------------------------
@@ -117,19 +98,19 @@ CREATE TABLE IF NOT EXISTS `PousoAlegrill_BD`.`Mesa_has_Comida` (
   `mesa_idMesa` INT NOT NULL,
   `comida_idComida` INT NOT NULL,
   `servida` TINYINT(1) NOT NULL,
-  /*PRIMARY KEY (`mesa_idMesa`, `comida_idComida`),*/
+  /* PRIMARY KEY (`mesa_idMesa`, `comida_idComida`), */
   INDEX `fk_mesa_has_comida_comida1_idx` (`comida_idComida` ASC),
   INDEX `fk_mesa_has_comida_mesa_idx` (`mesa_idMesa` ASC),
   CONSTRAINT `fk_mesa_has_comida_mesa`
     FOREIGN KEY (`mesa_idMesa`)
     REFERENCES `PousoAlegrill_BD`.`Mesa` (`idMesa`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `fk_mesa_has_comida_comida1`
     FOREIGN KEY (`comida_idComida`)
     REFERENCES `PousoAlegrill_BD`.`Comida` (`idComida`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 -- -----------------------------------------------------
@@ -148,7 +129,7 @@ insert into Usuario values(0, 'karla', 'karla@karla', 'karla', 1);
 insert into Usuario values(0, 'pedro', 'pedro@pedro', 'pedro', 2);
 insert into Usuario values(0, 'luiz', 'luiz@luiz', 'luiz', 3);
 insert into Usuario values(0, 'admin', 'admin@admin', 'admin', 4);
-
+/*
 insert into Comida values(0, 'batata frita', true, 12.50);
 insert into Comida values(0, 'halls', true, 2.50);
 insert into Comida values(0, 'espetinho', true, 4.00);
@@ -172,7 +153,7 @@ insert into mesa_has_comida values(3, 1, false);
 insert into mesa_has_comida values(3, 3, false);
 insert into mesa_has_comida values(1, 2, true);
 insert into mesa_has_comida values(1, 2, false);
-
+*/
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
